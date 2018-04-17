@@ -1,0 +1,5 @@
+FROM openjdk:8-jre-alpine
+COPY ./target/gdd-1.0.jar /tmp
+WORKDIR /tmp
+EXPOSE 8888
+CMD ["java", "-jar", "gdd-1.0.jar"]
