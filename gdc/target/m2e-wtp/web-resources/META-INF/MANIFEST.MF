@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: gdc
+Implementation-Version: 1.0
+Built-By: jfiorina
+Implementation-Vendor-Id: gdc
+Build-Jdk: 1.8.0_161
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/gdc
+Created-By: Maven Integration for Eclipse
+Main-Class: main.java.gdc.Application
+

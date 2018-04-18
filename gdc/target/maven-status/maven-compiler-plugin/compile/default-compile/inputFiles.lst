@@ -1,0 +1,11 @@
+/gdc/src/main/java/gdc/Categoria.java
+/gdc/src/main/java/gdc/Compra.java
+/gdc/src/main/java/gdc/ProductoController.java
+/gdc/src/main/java/gdc/CompraRepository.java
+/gdc/src/main/java/gdc/Application.java
+/gdc/src/main/java/gdc/CategoriaRepository.java
+/gdc/src/main/java/gdc/Producto.java
+/gdc/src/main/java/gdc/ProductoRepository.java
+/gdc/src/main/java/gdc/CompraController.java
+/gdc/src/main/java/gdc/CategoriaController.java
+/gdc/src/main/java/gdc/ResponseCustom.java

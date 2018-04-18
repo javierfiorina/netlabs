@@ -1,0 +1,18 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "gdc.gdcConfiguration",
+      "name": "datasource.gdc",
+      "sourceMethod": "primaryDataSource()",
+      "type": "javax.sql.DataSource"
+    },
+    {
+      "sourceType": "gdd.gddConfiguration",
+      "name": "datasource.gdd",
+      "sourceMethod": "primaryDataSource()",
+      "type": "javax.sql.DataSource"
+    }
+  ],
+  "properties": []
+}
