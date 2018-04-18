@@ -1,5 +1,6 @@
-FROM openjdk:8-jre-alpine
-COPY ./target/gdd-1.0.jar /tmp
-WORKDIR /tmp
-EXPOSE 8888
-CMD ["java", "-jar", "gdd-1.0.jar"]
+FROM maven:3.5.2-alpine
+WORKDIR /usr/src/java-code
+COPY . /usr/src/java-code/
+RUN mvn package
+EXPOSE 8080
+CMD ["java", "-jar", "target/gdd-1.0.jar"]

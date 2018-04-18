@@ -43,6 +43,7 @@
 	</properties>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<defaultGoal>package</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

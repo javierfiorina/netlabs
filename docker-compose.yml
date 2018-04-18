@@ -1,47 +1,74 @@
 version: '3'
 services:
-    docker-mysql:
+    gdc-mysql:
         image: mysql:latest
-        container_name: some-mysql
+        container_name: gdc-mysql
         environment:
             - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=gdd,gdc
+            - MYSQL_USER=root
+            - MYSQL_DATABASE=gdc
             - MYSQL_PASSWORD=root
+            - MYSQL_PORT=3306
+        restart: always
+    gdd-mysql:
+        image: mysql:latest
+        container_name: gdd-mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=root
+            - MYSQL_DATABASE=gdd
+            - MYSQL_PASSWORD=root
+            - MYSQL_PORT=3306
+        restart: always  
+    gdc-activemq:
+        image: webcenter/activemq:latest
         ports:
-            - "3306:3308" 
-        restart: always    
+            - 8161:8161
+            - 61616:61616
+            - 61613:61613
+        environment:
+            ACTIVEMQ_NAME: amq
+            ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT: 'True'
+            ACTIVEMQ_ADMIN_LOGIN: admin
+            ACTIVEMQ_ADMIN_PASSWORD: admin
     gdc:
         container_name: gdc-docker
         build:
-            context: ./gdc
-            dockerfile: /gdc/DOCKERFILE
-        working_dir: /gdc
+            context: gdc
+            dockerfile: DOCKERFILE
         volumes:
             - ./gdc:/gdc
+        working_dir: /gdc
         depends_on:
-            - docker-mysql
+            - gdc-mysql
+            - gdc-activemq
         ports:
-            - "8080:8888"
+            - "8888:8080"
         environment:
-            - MYSQL_DB_HOST=localhost
-            - MYSQL_DB_PORT=3308
+            - MYSQL_DB_HOST=gdc-mysql
+            - MYSQL_DB_PORT=3306
             - MYSQL_DB_USER=root
             - MYSQL_DB_PASS=root
-            - GDD_URL=http://localhost:8889/gdc
-        command: mvn clean spring-boot:run
+            - GDD_URL=http://gdd-docker:8889/gdc
+            - ACTIVEMQ_URL=tcp://gdc-activemq:61616
+            - ACTIVEMQ_USER=admin
+            - ACTIVEMQ_PASS=admin
+        restart: always
     gdd:
         container_name: gdd-docker
-        build: ./gdd
+        build: 
+            context: gdd
+            dockerfile: DOCKERFILE
         volumes:
             - ./gdd:/gdd
         working_dir: /gdd
         depends_on:
-            - docker-mysql
+            - gdd-mysql
         ports:
-            - "8080:8889"
+            - "8889:8080"
         environment:
-            - MYSQL_DB_HOST=localhost
-            - MYSQL_DB_PORT=3308
+            - MYSQL_DB_HOST=gdd-mysql
+            - MYSQL_DB_PORT=3306
             - MYSQL_DB_USER=root
             - MYSQL_DB_PASS=root
-        command: mvn clean spring-boot:run
+        restart: always

@@ -1,1 +1,6 @@
-FROM maven:3.5-jdk-8
+FROM maven:3.5.2-alpine
+WORKDIR /usr/src/java-code
+COPY . /usr/src/java-code/
+RUN mvn package
+EXPOSE 8080
+CMD ["java", "-jar", "target/gdc-1.0.jar"]

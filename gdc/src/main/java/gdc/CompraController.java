@@ -16,10 +16,12 @@ public class CompraController {
 	@Autowired
 	private CompraRepository compraRepository;
 	private ProductoRepository productoRepository;
+	private CategoriaRepository categoriaRepository;
 
-	public CompraController(CompraRepository compraRepository, ProductoRepository productoRepository) {
+	public CompraController(CompraRepository compraRepository, ProductoRepository productoRepository, CategoriaRepository categoriaRepository) {
 		this.compraRepository = compraRepository;
 		this.productoRepository = productoRepository;
+		this.categoriaRepository = categoriaRepository;
 		
 	}
 	
@@ -40,6 +42,7 @@ public class CompraController {
 			compraRepository.save(new Compra(ahora,input.getProductoNombre(),precio,input.getCantidad()));
 			prod.setStock(prod.getStock() - input.getCantidad()); 
 			productoRepository.save(prod);
+			mandarAlerta(prod);
 			return new ResponseCustom("OK", 200);
 		}catch(Exception e) {			
 			return new ResponseCustom("Error: "+ e.toString(), 500);
@@ -57,6 +60,12 @@ public class CompraController {
 		String gddUrl =  System.getenv("GDD_URL");
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.getForObject(gddUrl+"/"+productoNombre, int.class);
+	}
+	
+	private void mandarAlerta(Producto prod) {
+		Optional<Categoria> cat =  categoriaRepository.findByNombre(prod.getCategoriaNombre());
+		if (cat.get().getUmbral() < prod.getStock())
+			CompraHelper.createAlerta(prod.getNombre(), prod.getStock());
 	}
 
 	
