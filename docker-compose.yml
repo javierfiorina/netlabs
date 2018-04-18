@@ -1,0 +1,47 @@
+version: '3'
+services:
+    docker-mysql:
+        image: mysql:latest
+        container_name: some-mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=gdd,gdc
+            - MYSQL_PASSWORD=root
+        ports:
+            - "3306:3308" 
+        restart: always    
+    gdc:
+        container_name: gdc-docker
+        build:
+            context: ./gdc
+            dockerfile: /gdc/DOCKERFILE
+        working_dir: /gdc
+        volumes:
+            - ./gdc:/gdc
+        depends_on:
+            - docker-mysql
+        ports:
+            - "8080:8888"
+        environment:
+            - MYSQL_DB_HOST=localhost
+            - MYSQL_DB_PORT=3308
+            - MYSQL_DB_USER=root
+            - MYSQL_DB_PASS=root
+            - GDD_URL=http://localhost:8889/gdc
+        command: mvn clean spring-boot:run
+    gdd:
+        container_name: gdd-docker
+        build: ./gdd
+        volumes:
+            - ./gdd:/gdd
+        working_dir: /gdd
+        depends_on:
+            - docker-mysql
+        ports:
+            - "8080:8889"
+        environment:
+            - MYSQL_DB_HOST=localhost
+            - MYSQL_DB_PORT=3308
+            - MYSQL_DB_USER=root
+            - MYSQL_DB_PASS=root
+        command: mvn clean spring-boot:run
