@@ -6,7 +6,7 @@ Pasos:
 GDC:
 Servicios rest:
  - Modificar el umbral de una categoria : 
-   	- url POST gdc/categoria
+   	- url POST http://localhost:8080/gdc/categoria
 	- Body : 
 		{
 			"nombre": "Comestibles", #Nombre de categoria
@@ -18,7 +18,7 @@ Servicios rest:
 			"errcode": 200
 		}
 - Ver compras:
-	- url GET /gdc/compra
+	- url GET http://localhost:8080/gdc/compra
 	- Body:
 		{
 			"fecha": "2018-04-17",
@@ -26,7 +26,7 @@ Servicios rest:
 			"precio": 100	
 		}
 - Ingresar una compra
-	- url POST /gdc/Compra
+	- url POST http://localhost:8080/gdc/Compra
 	- Body:
 		{
 			"productoNombre": "Cheetos",
@@ -38,7 +38,7 @@ Servicios rest:
 			"errcode": 200
 		}
 - Ver todos los productos
-	- url GET gdc/productos
+	- url GET http://localhost:8080/gdc/productos
 	- ejemplo de respuesta:
 	[
 		{
